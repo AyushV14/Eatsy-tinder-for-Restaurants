@@ -1,50 +1,108 @@
-# Welcome to your Expo app 👋
+# 🍽️ Eatsy - Tinder for Restaurants
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+[![Project Status: WIP](https://img.shields.io/badge/status-WIP-yellow.svg)](https://img.shields.io/badge/status-WIP-yellow.svg)
+![React Native](https://img.shields.io/badge/react_native-%2320232a.svg?style=flat&logo=react&logoColor=%2361DAFB)
+![Expo](https://img.shields.io/badge/expo-1C1E24?style=flat&logo=expo&logoColor=#D04A37)
 
-## Get started
+Discover your next favorite dining experience through a swipe! Eatsy revolutionizes restaurant discovery by combining the intuitive Tinder-style interface with personalized recommendations for food lovers.
 
-1. Install dependencies
+![Eatsy App Preview](https://via.placeholder.com/800x400?text=Screenshots+Coming+Soon)
 
+## ✨ Features (Current & Planned)
+
+### ✅ Implemented
+- Smooth onboarding experience
+- Authentication flow (Login/Signup)
+- Responsive home page layout
+- User session management
+- Basic restaurant cards with swipe functionality
+
+### 🚧 In Progress
+- Swipe animation refinements
+- Restaurant matching algorithm
+- Profile customization
+- Social sharing features
+
+### 📅 Planned
+- Restaurant detail pages
+- Match history tracking
+- Personalized recommendations
+- Group decision making feature
+
+## 🛠 Tech Stack
+
+- **Framework**: React Native + Expo Go
+- **Authentication**: [Clerk](https://clerk.dev/)
+- **Database**: [Convex](https://www.convex.dev/)
+- **Navigation**: React Navigation
+- **State Management**: React Context API
+- **Styling**: StyleSheet + Flexbox
+
+## 📦 Installation
+
+1. Clone the repository:
    ```bash
-   npm install
-   ```
+   git clone https://github.com/your-username/eatsy.git
+   cd eatsy
+Install dependencies:
 
-2. Start the app
+bash
+Copy
+npm install
+# or
+yarn install
+Set up environment variables:
+Create .env file in root directory:
 
-   ```bash
-    npx expo start
-   ```
+env
+Copy
+CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+CONVEX_URL=your_convex_deployment_url
+Start the development server:
 
-In the output, you'll find options to open the app in a
+bash
+Copy
+npx expo start
+⚙️ Configuration
+Clerk Authentication
+Create a Clerk account at clerk.dev
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+Set up your application and get your publishable key
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+Add the key to your .env file
 
-## Get a fresh project
+Convex Database
+Sign up at convex.dev
 
-When you're ready, run:
+Create a new project and follow setup instructions
 
-```bash
-npm run reset-project
-```
+Add your Convex deployment URL to .env
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+🤝 Contributing
+Contributions are welcome! Please follow these steps:
 
-## Learn more
+Fork the project
 
-To learn more about developing your project with Expo, look at the following resources:
+Create your feature branch (git checkout -b feature/AmazingFeature)
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Commit your changes (git commit -m 'Add some AmazingFeature')
 
-## Join the community
+Push to the branch (git push origin feature/AmazingFeature)
 
-Join our community of developers creating universal apps.
+Open a Pull Request
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+📄 License
+Distributed under the MIT License. See LICENSE for more information.
+
+🙏 Acknowledgments
+Clerk for seamless authentication
+
+Convex for powerful database solutions
+
+React Native community for awesome tools
+
+Tinder for UI inspiration
+
+Note: This project is currently under active development. Features and implementation details may change frequently.
+
+📧 Contact: **vikharankarayush14@gmail.com**
