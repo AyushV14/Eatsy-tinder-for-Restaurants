@@ -1,22 +1,17 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { SignedIn, SignedOut, useAuth, useUser } from '@clerk/clerk-expo'
-import { Link, useRouter } from 'expo-router'
+import { useAuth, useUser } from '@clerk/clerk-expo'
+import { useRouter } from 'expo-router'
 import FormComponent from '@/components/FormComponent'
+import { useQuery } from 'convex/react';
+import { api } from '@/convex/_generated/api';
 
-type Props = {}
-
-const Home = (props: Props) => {
-  const { user } = useUser()
+const Home = () => {
+  const { user, isLoaded: clerkLoaded } = useUser();
   const { signOut } = useAuth()
   const router = useRouter()
-
-  
-  const handleSignOut = async () => {
-    await signOut();
-    router.replace('/(auth)/sign-in'); 
-  }
+  const userEmail = user?.primaryEmailAddress?.emailAddress;
 
   useEffect(() => {
     if (!user) {
@@ -24,13 +19,38 @@ const Home = (props: Props) => {
     }
   }, [user, router]);
 
+  const handleSignOut = async () => {
+    await signOut();
+    router.replace('/(auth)/sign-in'); 
+  }
+
+  const dbUser = useQuery(api.user.getUserByEmail, 
+    userEmail ? { email: userEmail } : 'skip'
+  );
+
+  if (!clerkLoaded || dbUser === undefined) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <Text>Loading...</Text>
+      </SafeAreaView>
+    );
+  }
+
+
+  if (!dbUser) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <FormComponent />
+      </SafeAreaView>
+    );
+  }
+
+  // Main render
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-          <FormComponent />
-          <Text style={styles.greetingText}>Hello {user?.emailAddresses[0].emailAddress}</Text>
-          <Text style={styles.signOutbtn} onPress={handleSignOut}> SignOut</Text>
-
+        <Text style={styles.greetingText}>Hello {user?.emailAddresses[0].emailAddress}</Text>
+        <Text style={styles.signOutbtn} onPress={handleSignOut}>SignOut</Text>
       </View>
     </SafeAreaView>
   )

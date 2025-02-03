@@ -8,5 +8,5 @@ export default defineSchema({
         email:v.string(),
         location:v.string(),
         avatar:v.any(),
-    })
+    }).index('by_email', ['email'])
 })

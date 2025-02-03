@@ -1,6 +1,9 @@
 import { StyleSheet, View, Text, TextInput, ScrollView, TouchableOpacity, FlatList } from 'react-native';
 import React, { useState } from 'react';
 import LottieView from 'lottie-react-native';
+import { useUser } from '@clerk/clerk-expo';
+import { useMutation } from 'convex/react';
+import { api } from '@/convex/_generated/api';
 
 type Props = {}
 
@@ -18,6 +21,40 @@ const FormComponent = (props: Props) => {
     const [selectedAvatar, setSelectedAvatar] = useState<number | null>(null);
     const [selectedCity, setSelectedCity] = useState<string | null>(null);
     const [dropdownVisible, setDropdownVisible] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string>('');
+    const {user} = useUser()
+    const createUser = useMutation(api.user.createUser);
+
+    
+
+    const handleSubmit = async () => {
+        setErrorMessage('');
+        
+        if (!username.trim() || !selectedAvatar || !selectedCity) {
+          setErrorMessage('All fields are required');
+          return;
+        }
+        
+        if (!user?.primaryEmailAddress?.emailAddress) {
+          setErrorMessage('Email is required');
+          return;
+        }
+    
+        try {
+          await createUser({
+            name: user.firstName || username,
+            userName: username,
+            email: user.primaryEmailAddress.emailAddress,
+            location: selectedCity,
+            avatar: selectedAvatar,
+          });
+          // Optional: Add success handling here
+          console.log('User created successfully!');
+        } catch (error) {
+          console.error('Error creating user:', error);
+          setErrorMessage('Failed to save profile. Please try again.');
+        }
+      };
 
     return (
         <View style={styles.modal}>
@@ -28,7 +65,10 @@ const FormComponent = (props: Props) => {
                 <TextInput
                     style={styles.input}
                     value={username}
-                    onChangeText={setUsername}
+                    onChangeText={(text) => {
+                        setUsername(text);
+                        setErrorMessage('');
+                    }}
                     placeholder="Enter your username"
                     placeholderTextColor="#888"
                 />
@@ -38,8 +78,11 @@ const FormComponent = (props: Props) => {
                     {avatars.map((avatar) => (
                         <TouchableOpacity
                             key={avatar.id}
-                            onPress={() => setSelectedAvatar(avatar.source)}
-                            style={[styles.avatarWrapper, selectedAvatar === avatar.source && styles.selectedAvatar]}
+                            onPress={() => {
+                                setSelectedAvatar(avatar.id);
+                                setErrorMessage('');
+                            }}
+                            style={[styles.avatarWrapper, selectedAvatar === avatar.id && styles.selectedAvatar]}
                         >
                             <LottieView source={avatar.source} style={styles.avatar} />
                         </TouchableOpacity>
@@ -47,7 +90,10 @@ const FormComponent = (props: Props) => {
                 </ScrollView>
 
                 <Text style={styles.label}>Location</Text>
-                <TouchableOpacity style={styles.dropdownButton} onPress={() => setDropdownVisible(!dropdownVisible)}>
+                <TouchableOpacity 
+                    style={styles.dropdownButton} 
+                    onPress={() => setDropdownVisible(!dropdownVisible)}
+                >
                     <Text style={styles.dropdownText}>
                         {selectedCity ? selectedCity : 'Select a city'}
                     </Text>
@@ -64,6 +110,7 @@ const FormComponent = (props: Props) => {
                                     onPress={() => {
                                         setSelectedCity(item);
                                         setDropdownVisible(false);
+                                        setErrorMessage('');
                                     }}
                                 >
                                     <Text style={styles.dropdownItemText}>{item}</Text>
@@ -75,23 +122,20 @@ const FormComponent = (props: Props) => {
 
                 <TouchableOpacity
                     style={styles.submitButton}
-                    onPress={() => {
-                        // Log the values when the button is pressed
-                        console.log('Username:', username);
-                        console.log('Selected Avatar:', selectedAvatar);
-                        console.log('Selected City:', selectedCity);
-                    }}
+                    onPress={handleSubmit}
                 >
                     <Text style={styles.submitText}>Save Profile</Text>
                 </TouchableOpacity>
 
+                {errorMessage ? (
+                    <Text style={styles.errorText}>{errorMessage}</Text>
+                ) : null}
             </View>
         </View>
     );
 };
 
 export default FormComponent;
-
 const styles = StyleSheet.create({
     modal: {
         position: 'absolute',
@@ -196,5 +240,11 @@ const styles = StyleSheet.create({
     dropdownItemText: {
         fontSize: 16,
         color: '#333',
+    },
+    errorText: {
+        color: 'red',
+        fontSize: 14,
+        marginTop: 10,
+        textAlign: 'center',
     },
 });
