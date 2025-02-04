@@ -6,6 +6,7 @@ import { useRouter } from 'expo-router'
 import FormComponent from '@/components/FormComponent'
 import { useQuery } from 'convex/react';
 import { api } from '@/convex/_generated/api';
+import HomeScreen from '@/components/HomeScreen'
 
 const Home = () => {
   const { user, isLoaded: clerkLoaded } = useUser();
@@ -47,11 +48,12 @@ const Home = () => {
 
   // Main render
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
+    <SafeAreaView style={styles.container} edges={['right', 'left', 'bottom']}>
+      <HomeScreen />
+      {/* <View style={styles.content} >
         <Text style={styles.greetingText}>Hello {user?.emailAddresses[0].emailAddress}</Text>
         <Text style={styles.signOutbtn} onPress={handleSignOut}>SignOut</Text>
-      </View>
+      </View> */}
     </SafeAreaView>
   )
 }
@@ -60,30 +62,7 @@ export default Home
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#fff', 
+    height:'100%'
   },
-  content: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-    backgroundColor: '#fff', 
-  },
-  greetingText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#000', 
-  },
-  linkText: {
-    fontSize: 16,
-    color: '#0066cc', 
-    marginVertical: 5,
-  },
-  signOutbtn:{
-    fontSize:20,
-    borderRadius:10,
-    padding:10,
-  }
 })
